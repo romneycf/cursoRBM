@@ -1,13 +1,11 @@
 <?php
-if (isset($_POST['Acessar'])) {
-    session_start();
-    $_SESSION['cpfusuario'] = $_POST['cpf'];
-    header('Location: dashboard.php');
-}
 if (isset($_POST['Registrar'])) {
-    header('Location: registrar.php');
+   //SELECT SE JA ESTA INSERIDO O CPF SE NÃO FAZER INSERT
 }
 
+if (isset($_POST['Voltar'])) {
+    header('Location: login.php');
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -17,9 +15,9 @@ if (isset($_POST['Registrar'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <title>Login</title>
+    <title>Registrar</title>
 </head>
 <style>
     body {
@@ -40,7 +38,7 @@ if (isset($_POST['Registrar'])) {
         align-items: center;
         padding: 50px;
         border: 1px solid grey;
-        max-height: 200px;
+        max-height: 400px;
     }
 
     .input-wrapper {
@@ -69,18 +67,28 @@ if (isset($_POST['Registrar'])) {
     <div id="container">
         <form method="Post">
             <div id="card">
-                <h2>Login</h2>
+            <h2>Registrar</h2>
                 <div class="input-wrapper">
                     <label>CPF:</label>
-                    <input name="cpf" id="cpf" />
+                    <input id="cpf" />
+                    <label>Nome:</label>
+                    <input />
+                    <label>Sexo:</label>
+                    <select name="sexo">
+                        <option value="M">Masculino</option>
+                        <option value="F">Feminino</option>
+                    </select>
+                    <label>Data de Nascimento:</label>
+                    <input type="date" />
                     <label>Senha:</label>
-                    <input name="senha" />
+                    <input type="password" />
+                    <label>Favor repetir a senha:</label>
+                    <input type="password" />
                 </div>
                 <div class="button-wrapper">
+                    <button name="Voltar" class="button">Voltar</button>
                     <button name="Registrar" class="button">Registrar</button>
-                    <button name="Acessar" class="button">Acessar</button>
                 </div>
-                <a href="">Esquceu a senha?</a>
             </div>
         </form>
     </div>
@@ -92,5 +100,4 @@ if (isset($_POST['Registrar'])) {
         $("#cpf").mask('000.000.000-00');
     });
 </script>
-
 </html>
