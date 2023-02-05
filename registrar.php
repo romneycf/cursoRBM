@@ -1,6 +1,6 @@
 <?php
 if (isset($_POST['Registrar'])) {
-   //SELECT SE JA ESTA INSERIDO O CPF SE NÃO FAZER INSERT
+    //SELECT SE JA ESTA INSERIDO O CPF SE Nï¿½O FAZER INSERT
 }
 
 if (isset($_POST['Voltar'])) {
@@ -15,7 +15,7 @@ if (isset($_POST['Voltar'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <title>Registrar</title>
 </head>
@@ -67,7 +67,7 @@ if (isset($_POST['Voltar'])) {
     <div id="container">
         <form method="Post">
             <div id="card">
-            <h2>Registrar</h2>
+                <h2>Registrar</h2>
                 <div class="input-wrapper">
                     <label>CPF:</label>
                     <input id="cpf" />
@@ -100,4 +100,5 @@ if (isset($_POST['Voltar'])) {
         $("#cpf").mask('000.000.000-00');
     });
 </script>
+
 </html>
