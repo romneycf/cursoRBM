@@ -1,15 +1,30 @@
-<?php
+<?php //ACONTECE ANTES DA PAGINA CARREGAR
+include "./inc/configuracao.php";
+global $conexao;
+session_start();
 if (isset($_POST['Acessar'])) {
+    //PEGANDO OS VALORES DE TODOS OS CAMPOS PREENCHIDOS
+    $cpf = $_POST['Cpf'];
+    $cpf = str_replace(array('.', '-'), '', $cpf); //REMOVENDO PONTO E - DO CPF
+    $password = $_POST['Password'];
 
-    //VALIDAR SE OS CAMPOS ESTÃO PREENCHIDOS   
-    session_start();
-    $_SESSION['cpfusuario'] = $_POST['cpf'];
-    header('Location: dashboard.php');
+    $sql =
+        "SELECT
+        *
+    FROM
+        usuarios
+    WHERE
+        CPF = '$cpf'
+    AND
+        SENHA = '$password'";
+    $queryConsulta = mysqli_query($conexao, $sql); //CONSULTA NO BANCO SE EXISTE CADASTRO PARA O CPF E A SENHA DIGITADOS
+    if (mysqli_num_rows($queryConsulta) == 0) { //SE NAO EXISTE RESULTADO
+        $alerta = true; //GAMBIARRA PARA DISPARAR ALERTA EM JAVASCRIPT
+    } else {
+        $_SESSION['cpfusuario'] = $cpf; //GRAVANDO NA SESSAO O CPF QUE IRA LOGAR (JA REMOVIDO OS '.', '-')
+        header('Location: dashboard.php');
+    }
 }
-if (isset($_POST['Registrar'])) {
-    header('Location: registrar.php');
-}
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,82 +33,57 @@ if (isset($_POST['Registrar'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js" integrity="sha512-0XDfGxFliYJPFrideYOoxdgNIvrwGTLnmK20xZbCAvPfLGQMzHUsaqZK8ZoH+luXGRxTrS46+Aq400nCnAT0/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
     <title>Login</title>
 </head>
-<style>
-    body {
-        overflow: hidden; /*TRANSBORDAR -> ESCONDIDO  */
-    }
-
-    #container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100vw;
-        height: 100vh;
-    }
-
-    #card {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 50px; /*DISTANCIA ENTRA A BORDA DA DIV E SEU PRIMEIRO ELEMENTO */
-        padding-top: 20px; /* MESMA COISA POREM PARA A BORDA SUPERIOR SOMENTE */
-        border: 1px solid grey;   
-    }
-
-    .input-wrapper { 
-        display: flex;
-        flex-direction: column;
-        gap: 8px; /*DISTANCIA ENTRE OS ELEMENTOS */
-    }
-
-    .button-wrapper {
-        display: flex;
-        flex-direction: row;
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .button {
-        cursor: pointer; /*FAZ VIRAR A MAOZINHA AO PASSAR O MOUSE POR CIMA */
-        border: 1px solid transparent;
-        padding: .375rem .75rem;/*REM -> ROOT ELEMENT, OU SEJA O ELEMENTO RAIZ, USANDO REM A GENTE PODE MUDAR O VALOR INICIAL E AUTOMATICAMENTE TODOS OS ELEMENTOS FILHOS TERÃO SEUS VALORES AJUSTADOS */
-        font-size: 1rem;
-        border-radius: .25rem;
-    }
-
-</style>
 
 <body>
-    <div id="container">
+    <div class="container">
         <form method="Post">
-            <div id="card">
+            <div class="card">
                 <h2>Login</h2>
                 <div class="input-wrapper">
                     <label>CPF:</label>
-                    <input name="cpf" id="cpf" autocomplete="off"></input>
+                    <div>
+                        <input required autocomplete="off" name="Cpf" class="cpf"></input>
+                    </div>
                     <label>Senha:</label>
-                    <input type="password" name="senha" autocomplete="off"></input>
+                    <div>
+                        <input required autocomplete="off" type="password" name="Password" id="password"></input>
+                        <button type="Button" class="bt-icone fa-regular fa-eye-slash" id="eye-icon" onclick="togglePassword()"></button>
+                    </div>
                 </div>
                 <div class="button-wrapper">
-                    <button name="Registrar" class="button">Registrar</button>
-                    <button name="Acessar" class="button">Acessar</button>
+                    <button type="Button" name="Registrar" class="button" onclick="location.href='registrar.php'">Registrar</button>
+                    <button type="Submit" name="Acessar" class="button" id="Acessar">Acessar</button>
                 </div>
                 <a href="">Esqueceu a senha?</a>
             </div>
         </form>
     </div>
 </body>
-
 <script LANGUAGE="javascript">
     $(document).ready(function() {
-        //MASCARA DE CPF
-        $("#cpf").mask('000.000.000-00');
+        if (<?= $alerta ?>) {
+            Toast.fire({
+                icon: 'error',
+                title: 'CPF ou senha inválidos.'
+            });
+        }
     });
+
+    function togglePassword() {
+        var element = document.getElementById("password");
+        var icon = document.getElementById("eye-icon");
+        if (element.type === "password") {
+            element.type = "text";
+            icon.classList.remove("fa-eye-slash");
+            icon.classList.add("fa-eye");
+        } else {
+            element.type = "password";
+            icon.classList.remove("fa-eye");
+            icon.classList.add("fa-eye-slash");
+        }
+    };
 </script>
 
 </html>
